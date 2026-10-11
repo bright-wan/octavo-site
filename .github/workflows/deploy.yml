@@ -1,0 +1,59 @@
+name: Deploy
+
+# Builds the site and publishes it to GitHub Pages on every push to main.
+# Settings -> Pages -> Source must be "GitHub Actions".
+#
+# Repository variable PUBLIC_DOWNLOAD_URL: the public R2 bucket URL (the app
+# repo's OCTAVO_DOWNLOAD_URL). Unset, the download buttons say the first
+# release is on its way.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          PUBLIC_DOWNLOAD_URL: ${{ vars.PUBLIC_DOWNLOAD_URL }}
+        run: npm run build
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

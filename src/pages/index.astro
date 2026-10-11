@@ -1,0 +1,635 @@
+---
+import Base from '../layouts/Base.astro'
+import AppMock from '../components/AppMock.astro'
+import Download from '../components/Download.astro'
+import {
+  DOWNLOAD_URL,
+  FILES,
+  LICENSE_URL,
+  PRIVACY_URL,
+  REPO_URL,
+  UPSTREAM_URL,
+} from '../config'
+
+const editors = [
+  {
+    name: 'Docs',
+    color: 'var(--c-docs)',
+    formats: '.docx',
+    text: 'Google Docs-style menus and one toolbar row. Comments and suggestions sit in the margin, and tracked changes save with the file.',
+  },
+  {
+    name: 'Sheets',
+    color: 'var(--c-sheets)',
+    formats: '.xlsx · .xlsm · .xls · .csv',
+    text: 'Workbooks with their formulas and formatting. Saving rewrites only the cells you changed.',
+  },
+  {
+    name: 'Slides',
+    color: 'var(--c-slides)',
+    formats: '.pptx',
+    text: 'Edit decks that still open the same way in PowerPoint.',
+  },
+  {
+    name: 'PDF',
+    color: 'var(--c-pdf)',
+    formats: '.pdf',
+    text: 'Read, annotate and edit the text of a PDF, or turn it into a Word, Excel or PowerPoint file.',
+  },
+  {
+    name: 'Markdown',
+    color: 'var(--c-markdown)',
+    formats: '.md',
+    text: 'Write in Markdown and export to Word, HTML or PDF.',
+  },
+  {
+    name: 'HTML',
+    color: 'var(--c-html)',
+    formats: '.html · .htm',
+    text: 'Open and edit web pages, then convert them to Word or PDF.',
+  },
+]
+
+const docsFeatures = [
+  [
+    'Menus, not a ribbon',
+    'File · Edit · View · Insert · Format · Tools · Extensions · Help, with menu search and a single toolbar row. Prefer the ribbon? It is one click away.',
+  ],
+  [
+    'Review in the margin',
+    'Comment, suggestion and link cards sit beside the text. Reply, accept or reject right there. Every author gets their own color.',
+  ],
+  [
+    'Pages that match',
+    'Pagination and line heights follow Google Docs. Add an outline, Web Layout, page numbers, or a dark page for late nights.',
+  ],
+  [
+    'Styles that behave',
+    'Google Docs paragraph styles with Update to match and Save as my default styles, plus checklists and bookmarks.',
+  ],
+]
+
+const principles = [
+  [
+    'Local by design',
+    'Files open, edit, save and convert on your computer. There is no account and no cloud document store.',
+  ],
+  [
+    'Nothing leaves unless you ask',
+    'AI is off until you add a provider in Settings, and then requests go only to that provider, or to a model you run yourself. No analytics.',
+  ],
+  [
+    'Real formats',
+    'Octavo rewrites only the parts you edit, so files keep opening correctly in Word, Excel and PowerPoint.',
+  ],
+]
+
+const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#download'
+---
+
+<Base
+  title="Octavo: a local office suite"
+  description="Octavo is a free, open-source office suite for macOS, Windows and Linux. Edit Word, Excel, PowerPoint, PDF, Markdown and HTML files on your own machine, with a Google Docs-style editor."
+>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="#top" aria-label="Octavo home">
+        <svg viewBox="0 0 64 64" aria-hidden="true"
+          ><rect width="64" height="64" rx="14" fill="currentColor"></rect><circle
+            cx="32"
+            cy="32"
+            r="15.6"
+            fill="none"
+            stroke="var(--bg)"
+            stroke-width="7.8"></circle></svg
+        >
+        <span>Octavo</span>
+      </a>
+      <nav aria-label="Main">
+        <a href="#editors" class="hide-sm">Editors</a>
+        <a href="#privacy" class="hide-sm">Privacy</a>
+        <a href={REPO_URL}>GitHub</a>
+        <a href="#download" class="btn primary small">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Free and open source · macOS · Windows · Linux</p>
+        <h1>Real office documents, <em>on your own machine.</em></h1>
+        <p class="lede">
+          Octavo opens and saves Word, Excel and PowerPoint files locally, with an editor that works
+          like Google Docs. No account, no cloud. Docs, Sheets, Slides, PDF, Markdown and HTML share
+          one window.
+        </p>
+        <div class="cta">
+          <a class="btn primary big" href={heroHref} data-hero-download>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"></path></svg
+            >
+            <span data-hero-label>Download Octavo</span>
+          </a>
+          <a class="btn big" href="#download">All platforms</a>
+        </div>
+        <p class="hero-meta"><span data-hero-platform></span><span data-version-short></span></p>
+        <div class="hero-mock">
+          <AppMock />
+        </div>
+      </div>
+    </section>
+
+    <section class="formats" aria-label="File formats">
+      <div class="wrap strip">
+        <span>Opens and saves</span>
+        <code>.docx</code><code>.xlsx</code><code>.pptx</code><code>.pdf</code><code>.md</code><code
+          >.html</code
+        ><code>.csv</code>
+      </div>
+    </section>
+
+    <section class="section" id="editors">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Six editors, one window</p>
+          <h2>Everything you open at work, in tabs.</h2>
+          <p>
+            A home screen keeps recent and starred files close. Light, dark and system themes come
+            built in.
+          </p>
+        </div>
+        <ul class="editors">
+          {
+            editors.map((e) => (
+              <li style={`--c: ${e.color}`}>
+                <div class="tile" aria-hidden="true">
+                  {e.name[0]}
+                </div>
+                <h3>{e.name}</h3>
+                <p class="fmt">{e.formats}</p>
+                <p>{e.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="docs">
+      <div class="wrap split">
+        <div class="section-head">
+          <p class="eyebrow">Octavo Docs</p>
+          <h2>The Google Docs way of working, on a .docx.</h2>
+          <p>
+            Octavo keeps the engines and file fidelity of an Office-format editor and puts the Google
+            Docs interface on top.
+          </p>
+        </div>
+        <ol class="features">
+          {
+            docsFeatures.map(([title, text]) => (
+              <li>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Principles</p>
+          <h2>Your documents stay yours.</h2>
+        </div>
+        <ol class="principles">
+          {
+            principles.map(([title, text], i) => (
+              <li>
+                <span class="num">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="more"><a href={PRIVACY_URL}>Read the privacy policy</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="cli">
+      <div class="wrap split">
+        <div class="section-head">
+          <p class="eyebrow">Command line and agents</p>
+          <h2>Scriptable, on the same engines.</h2>
+          <p>
+            Octavo ships an <code>octavo</code> command that inspects, converts, renders and edits
+            documents without opening a window. Settings → Integrations installs a matching skill
+            into Claude Code, Codex and other coding agents.
+          </p>
+        </div>
+        <pre class="terminal"><code><span class="p">$</span> octavo convert report.docx --to pdf
+<span class="p">$</span> octavo convert scan.pdf --to docx --out scan.docx
+<span class="p">$</span> octavo render deck.pptx --out previews/
+<span class="p">$</span> octavo create --type docx --from notes.md --out notes.docx</code></pre>
+      </div>
+    </section>
+
+    <Download />
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <p>
+        Octavo is free software under the <a href={LICENSE_URL}>Apache License 2.0</a>. It is a
+        modified version of <a href={UPSTREAM_URL}>GenOffice</a>.
+      </p>
+      <p class="links">
+        <a href={REPO_URL}>GitHub</a>
+        <a href={`${REPO_URL}/issues`}>Report an issue</a>
+        <a href={PRIVACY_URL}>Privacy</a>
+      </p>
+      <p class="quiet">This site sets no cookies and runs no analytics.</p>
+    </div>
+  </footer>
+</Base>
+
+<script define:vars={{ base: DOWNLOAD_URL, files: FILES }}>
+  // Point the hero button at the visitor's platform. Linux and unknown
+  // systems go to the download section to choose a package.
+  const os = document.documentElement.dataset.os
+  const button = document.querySelector('[data-hero-download]')
+  const label = document.querySelector('[data-hero-label]')
+  const platform = document.querySelector('[data-hero-platform]')
+  const choice = {
+    mac: ['Download for macOS', 'mac-arm64', 'Apple silicon'],
+    windows: ['Download for Windows', 'win-x64', 'Windows 10 and 11'],
+  }[os]
+  if (button && label) {
+    if (choice && base) {
+      label.textContent = choice[0]
+      button.href = `${base}/${files[choice[1]]}`
+      if (platform) platform.textContent = choice[2]
+    } else {
+      button.href = '#download'
+      if (os === 'linux') label.textContent = 'Download for Linux'
+    }
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 64px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font: 600 22px/1 var(--serif);
+    letter-spacing: -0.01em;
+  }
+
+  .brand:hover {
+    color: var(--text);
+  }
+
+  .brand svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 3vw, 28px);
+    font-size: 15px;
+  }
+
+  nav a:not(.btn) {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  nav a:not(.btn):hover {
+    color: var(--text);
+  }
+
+  .btn.small {
+    min-height: 38px;
+    padding: 0 18px;
+    font-size: 15px;
+  }
+
+  .btn.big {
+    min-height: 54px;
+    padding: 0 26px;
+    font-size: 17px;
+  }
+
+  .hero {
+    padding: clamp(56px, 9vw, 104px) 0 clamp(56px, 8vw, 96px);
+    text-align: center;
+  }
+
+  .hero h1 {
+    max-width: 900px;
+    margin: 18px auto 0;
+    font-size: clamp(44px, 7.4vw, 86px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .lede {
+    max-width: 640px;
+    margin: 24px auto 0;
+    font-size: clamp(18px, 2.2vw, 21px);
+    color: var(--muted);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .hero-meta span:not(:empty) + span:not(:empty)::before {
+    content: ' · ';
+  }
+
+  .hero-meta {
+    min-height: 1.5em;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--faint);
+  }
+
+  .hero-mock {
+    max-width: 1040px;
+    margin: clamp(44px, 7vw, 72px) auto 0;
+    text-align: left;
+  }
+
+  .formats {
+    border-top: 1px solid var(--line);
+  }
+
+  .strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 26px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .strip code {
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .editors {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .editors li {
+    padding: 30px 28px 34px;
+    background: var(--surface);
+  }
+
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: var(--c);
+    color: var(--surface);
+    font: 600 22px/1 var(--serif);
+  }
+
+  .editors h3 {
+    margin-top: 20px;
+    font-size: 28px;
+  }
+
+  .fmt {
+    margin: 4px 0 12px;
+    font: 400 13px/1.4 var(--mono);
+    color: var(--c);
+  }
+
+  .editors p:not(.fmt) {
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 6vw, 88px);
+    align-items: start;
+  }
+
+  .split .section-head {
+    margin-bottom: 0;
+    position: sticky;
+    top: 104px;
+  }
+
+  .features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: f;
+  }
+
+  .features li {
+    counter-increment: f;
+    padding: 26px 0 26px 56px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+
+  .features li:first-child {
+    border-top: 0;
+    padding-top: 6px;
+  }
+
+  .features li::before {
+    content: counter(f, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 30px;
+    font: italic 400 22px/1 var(--serif);
+    color: var(--accent);
+  }
+
+  .features li:first-child::before {
+    top: 10px;
+  }
+
+  .features h3 {
+    font-size: 26px;
+  }
+
+  .features p {
+    margin-top: 8px;
+    color: var(--muted);
+  }
+
+  .principles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 48px);
+  }
+
+  .principles li {
+    border-top: 2px solid var(--text);
+    padding-top: 20px;
+  }
+
+  .num {
+    font: italic 400 20px/1 var(--serif);
+    color: var(--accent);
+  }
+
+  .principles h3 {
+    margin-top: 14px;
+    font-size: 30px;
+  }
+
+  .principles p {
+    margin-top: 12px;
+    color: var(--muted);
+  }
+
+  .more {
+    margin-top: 40px;
+  }
+
+  .section-head code {
+    font-size: 0.9em;
+    color: var(--text);
+  }
+
+  .terminal {
+    margin: 0;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: var(--code-bg);
+    color: var(--code-text);
+    font-size: 14px;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .terminal .p {
+    color: #8e8a80;
+    user-select: none;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0 56px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .foot {
+    display: grid;
+    gap: 10px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+
+  .quiet {
+    color: var(--faint);
+  }
+
+  @media (max-width: 900px) {
+    .editors,
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .split .section-head {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .hide-sm {
+      display: none;
+    }
+
+    .editors,
+    .principles {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .editors li {
+      padding: 24px 20px 28px;
+    }
+
+    .terminal {
+      padding: 20px;
+      font-size: 13px;
+    }
+  }
+</style>

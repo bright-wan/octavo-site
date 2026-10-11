@@ -1,0 +1,274 @@
+---
+import { BUILD_URL, DOWNLOAD_URL, RELEASES_URL, downloadHref, type FileId } from '../config'
+
+const ready = Boolean(DOWNLOAD_URL)
+
+function link(id: FileId) {
+  const href = downloadHref(id)
+  return href ? { href } : { 'aria-disabled': 'true' }
+}
+
+const downloadIcon =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg>'
+---
+
+<section class="section" id="download">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Download</p>
+      <h2>Get Octavo</h2>
+      <p>
+        Free and open source. <span data-release-line
+          >{ready ? 'Latest release' : 'The first release is on its way'}</span
+        ><span data-version></span>.
+      </p>
+    </div>
+
+    <div class="platforms">
+      <article class="platform" data-os="mac">
+        <h3>macOS</h3>
+        <p class="req">Apple silicon (M1 or later) · macOS 12 Monterey or later</p>
+        <div class="buttons">
+          <a class="btn primary" {...link('mac-arm64')} data-file="mac-arm64">
+            <Fragment set:html={downloadIcon} />Download .dmg
+          </a>
+        </div>
+        <p class="meta" data-meta="mac-arm64"></p>
+        <p class="how">
+          Open the disk image and drag Octavo into Applications. Builds are signed and notarized
+          by Apple, and Octavo updates itself.
+        </p>
+        <p class="aside">Intel Mac? <a href={BUILD_URL}>Build from source</a> for now.</p>
+      </article>
+
+      <article class="platform" data-os="windows">
+        <h3>Windows</h3>
+        <p class="req">Windows 10 or 11 · 64-bit (x64)</p>
+        <div class="buttons">
+          <a class="btn primary" {...link('win-x64')} data-file="win-x64">
+            <Fragment set:html={downloadIcon} />Download installer
+          </a>
+        </div>
+        <p class="meta" data-meta="win-x64"></p>
+        <p class="how">
+          The installer is not code-signed yet, so SmartScreen may say “Windows protected your
+          PC”. Choose <b>More info</b>, then <b>Run anyway</b>. Octavo updates itself after that.
+        </p>
+      </article>
+
+      <article class="platform" data-os="linux">
+        <h3>Linux</h3>
+        <p class="req">x86_64 · Ubuntu 22.04, Fedora 36 or newer (glibc 2.35+)</p>
+        <div class="buttons">
+          <a class="btn primary" {...link('linux-deb')} data-file="linux-deb">
+            <Fragment set:html={downloadIcon} />.deb
+          </a>
+          <a class="btn" {...link('linux-rpm')} data-file="linux-rpm">.rpm</a>
+          <a class="btn" {...link('linux-appimage')} data-file="linux-appimage">AppImage</a>
+        </div>
+        <p class="meta" data-meta="linux-deb"></p>
+        <pre><code><span class="c"># Debian, Ubuntu</span>
+sudo apt install ./octavo-linux-amd64.deb
+<span class="c"># Fedora, openSUSE</span>
+sudo dnf install ./octavo-linux-x86_64.rpm
+<span class="c"># AppImage, any distro (needs libfuse2)</span>
+chmod +x Octavo-linux-x86_64.AppImage</code></pre>
+      </article>
+    </div>
+
+    <div class="extras">
+      <details data-checksums hidden>
+        <summary>SHA-256 checksums</summary>
+        <ul></ul>
+      </details>
+      <p class="links">
+        <a href={RELEASES_URL}>Release notes</a>
+        <a href={BUILD_URL}>Build from source</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ base: DOWNLOAD_URL }}>
+  // Fill in version, sizes and checksums from the bucket's latest.json and
+  // mark the visitor's platform. The links work without this script: they
+  // point at stable aliases that always serve the newest release.
+  const os = document.documentElement.dataset.os
+  document.querySelector(`.platform[data-os="${os}"]`)?.classList.add('is-current')
+
+  const mb = (bytes) => `${Math.round(bytes / 1048576)} MB`
+
+  if (base) {
+    fetch(`${base}/latest.json`, { cache: 'no-cache' })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((m) => {
+        if (typeof m.version !== 'string') return
+        document.querySelectorAll('[data-version]').forEach((el) => {
+          el.textContent = `: version ${m.version}`
+        })
+        document.querySelectorAll('[data-version-short]').forEach((el) => {
+          el.textContent = `Version ${m.version}`
+        })
+        for (const [id, f] of Object.entries(m.files ?? {})) {
+          const meta = document.querySelector(`[data-meta="${id}"]`)
+          if (meta && f.size) meta.textContent = `${f.file} · ${mb(f.size)}`
+          const size = document.querySelector(`[data-size="${id}"]`)
+          if (size && f.size) size.textContent = mb(f.size)
+        }
+        const box = document.querySelector('[data-checksums]')
+        const list = box?.querySelector('ul')
+        if (box && list) {
+          for (const f of Object.values(m.files ?? {})) {
+            const li = document.createElement('li')
+            const code = document.createElement('code')
+            code.textContent = f.sha256
+            li.append(code, ` ${f.file}`)
+            list.append(li)
+          }
+          box.hidden = false
+        }
+      })
+      .catch(() => {})
+  }
+</script>
+
+<style>
+  .platforms {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .platform {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    min-width: 0;
+  }
+
+  .platform.is-current {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .platform h3 {
+    font-size: 30px;
+  }
+
+  .platform.is-current h3::after {
+    content: 'Your system';
+    margin-left: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: 600 12px/1.4 var(--sans);
+    vertical-align: middle;
+  }
+
+  .req {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .meta {
+    min-height: 1.4em;
+    color: var(--faint);
+    font: 400 13px/1.4 var(--mono);
+    overflow-wrap: anywhere;
+  }
+
+  .how {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .how b {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .aside {
+    margin-top: auto;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  pre {
+    margin: 0;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  pre .c {
+    color: #8e8a80;
+  }
+
+  .extras {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px 32px;
+    margin-top: 28px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .extras details {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .extras summary {
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  .extras ul {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    font-size: 12.5px;
+  }
+
+  .extras li {
+    overflow-wrap: anywhere;
+  }
+
+  .extras li + li {
+    margin-top: 6px;
+  }
+
+  @media (max-width: 980px) {
+    .platforms {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .platform {
+      padding: 22px 18px;
+    }
+  }
+</style>
