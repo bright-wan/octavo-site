@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from 'astro:content'
+import Page from '../layouts/Page.astro'
+
+const newestFirst = (a: string, b: string) =>
+  b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' })
+const releases = (await getCollection('releases')).sort((a, b) =>
+  newestFirst(a.data.version, b.data.version),
+)
+const rendered = await Promise.all(releases.map(async (r) => ({ ...r, ...(await render(r)) })))
+const fmt = new Intl.DateTimeFormat('en', { dateStyle: 'long', timeZone: 'UTC' })
+---
+
+<Page
+  title="Release notes · Octavo"
+  description="What changed in each Octavo release."
+  eyebrow="Release notes"
+  heading="What's new"
+>
+  {
+    rendered.map(({ data, Content }) => (
+      <article class="release" id={`v${data.version}`}>
+        <h2>Octavo {data.version}</h2>
+        <p class="when">
+          {fmt.format(data.date)} · {data.platforms.join(', ')}
+        </p>
+        <Content />
+      </article>
+    ))
+  }
+</Page>
+
+<style>
+  .release + .release {
+    margin-top: 56px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+
+  .release h2 {
+    margin-top: 0;
+  }
+
+  .release:first-child h2 {
+    margin-top: 8px;
+  }
+
+  .when {
+    margin-top: -4px;
+    color: var(--faint);
+    font-size: 15px;
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import Page from '../layouts/Page.astro'
+
+// Mirrors PRIVACY.md in the app repo; update both together.
+---
+
+<Page
+  title="Privacy · Octavo"
+  description="What Octavo and this website send over the network, and what they never do."
+  eyebrow="Privacy"
+  heading="Privacy policy"
+>
+  <p class="lead">
+    Octavo opens, edits and saves documents locally. Editing never uploads your files anywhere.
+  </p>
+
+  <h2>What leaves your machine</h2>
+  <ul>
+    <li>
+      <strong>AI features</strong>, only when you use them, and only to the AI provider whose key or
+      endpoint you configured in Settings (or a local model server you run yourself). The request
+      carries the text and context that feature needs.
+    </li>
+    <li>
+      <strong>Web and image search</strong> from the AI panel, only when you use it, and only to the
+      search provider you configured.
+    </li>
+    <li>
+      <strong>Update checks</strong>: shortly after launch and every four hours, Octavo downloads a
+      small update feed file from its download server (Cloudflare R2). The request carries only
+      what any download does (your IP address and the app's user agent), and installing an update
+      always asks first.
+    </li>
+  </ul>
+
+  <h2>What does not</h2>
+  <ul>
+    <li>
+      <strong>No usage analytics.</strong> Octavo builds include no analytics credentials, so the analytics
+      code described below stays inactive.
+    </li>
+    <li><strong>No account.</strong> Octavo has no sign-in and no cloud document store.</li>
+  </ul>
+
+  <h2>Inactive analytics code</h2>
+  <p>
+    The analytics module inherited from GenOffice is still in the source. It sends nothing unless a
+    build injects Google Analytics 4 credentials, which Octavo builds do not. If that ever changes,
+    this list is what it would send (no document content, file names, paths or email addresses),
+    and <b>Settings → General → Send anonymous usage statistics</b> would turn it off:
+  </p>
+  <ul>
+    <li><code>install_first_launch</code>: first launch of a new anonymous install ID</li>
+    <li><code>app_launch</code>: no event-specific parameter</li>
+    <li><code>file_open</code>: <code>ext</code>, the file extension such as <code>docx</code></li>
+    <li>
+      <code>file_new</code>: <code>kind</code>, one of <code>docx</code>, <code>xlsx</code>,{' '}
+      <code>pptx</code>, <code>md</code> or <code>pdf</code>
+    </li>
+  </ul>
+
+  <h2>This website</h2>
+  <p>
+    This site sets no cookies and runs no analytics, and its fonts are served from the site itself.
+    It is hosted on GitHub Pages, and installers and release information come from Cloudflare R2.
+    Like any web server, they receive your IP address and browser user agent with each request.
+  </p>
+
+  <p class="updated">Last updated: October 21, 2026</p>
+</Page>

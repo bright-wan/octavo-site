@@ -1,0 +1,89 @@
+---
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
+import Base from './Base.astro'
+
+interface Props {
+  title: string
+  description: string
+  heading: string
+  eyebrow?: string
+}
+
+const { title, description, heading, eyebrow } = Astro.props
+---
+
+<Base title={title} description={description}>
+  <Header />
+  <main class="page wrap">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{heading}</h1>
+    <div class="prose">
+      <slot />
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .page {
+    max-width: 760px;
+    padding-top: clamp(48px, 8vw, 88px);
+    padding-bottom: clamp(64px, 10vw, 112px);
+  }
+
+  h1 {
+    margin-top: 12px;
+    font-size: clamp(40px, 6vw, 60px);
+  }
+
+  .prose {
+    margin-top: 32px;
+    color: var(--muted);
+  }
+
+  .prose :global(h2) {
+    margin: 48px 0 12px;
+    font-size: 30px;
+    color: var(--text);
+  }
+
+  .prose :global(h3) {
+    margin: 28px 0 8px;
+    font-size: 22px;
+    color: var(--text);
+  }
+
+  .prose :global(p),
+  .prose :global(ul) {
+    margin: 0 0 16px;
+  }
+
+  .prose :global(ul) {
+    padding-left: 22px;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 8px;
+  }
+
+  .prose :global(strong),
+  .prose :global(b) {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .prose :global(code) {
+    color: var(--text);
+  }
+
+  .prose :global(.lead) {
+    font-size: 19px;
+  }
+
+  .prose :global(.updated) {
+    margin-top: 40px;
+    color: var(--faint);
+    font-size: 15px;
+  }
+</style>

@@ -2,6 +2,7 @@
 import { DOWNLOAD_URL, downloadHref, type FileId } from '../config'
 
 const ready = Boolean(DOWNLOAD_URL)
+const home = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 function link(id: FileId) {
   const href = downloadHref(id)
@@ -18,9 +19,8 @@ const downloadIcon =
       <p class="eyebrow">Download</p>
       <h2>Get Octavo</h2>
       <p>
-        Free and open source. <span data-release-line
-          >{ready ? 'Latest release' : 'The first release is on its way'}</span
-        ><span data-version></span>.
+        <span data-release-line>{ready ? 'Latest release' : 'The first release is on its way'}</span
+        ><span data-version></span>. <a href={`${home}releases/`}>Release notes</a>
       </p>
     </div>
 

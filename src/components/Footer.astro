@@ -1,0 +1,37 @@
+---
+const home = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+---
+
+<footer class="site-footer">
+  <div class="wrap foot">
+    <p class="links">
+      <a href={`${home}privacy/`}>Privacy</a>
+      <a href={`${home}releases/`}>Release notes</a>
+    </p>
+    <p class="quiet">This site sets no cookies and runs no analytics.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0 56px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .foot {
+    display: grid;
+    gap: 10px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+
+  .quiet {
+    color: var(--faint);
+  }
+</style>

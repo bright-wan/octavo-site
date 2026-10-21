@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro'
 import AppMock from '../components/AppMock.astro'
 import Download from '../components/Download.astro'
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
 import { DOWNLOAD_URL, FILES } from '../config'
 
 const editors = [
@@ -77,39 +79,20 @@ const principles = [
   ],
 ]
 
+const home = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#download'
 ---
 
 <Base
   title="Octavo: a local office suite"
-  description="Octavo is a free, open-source office suite for macOS, Windows and Linux. Edit Word, Excel, PowerPoint, PDF, Markdown and HTML files on your own machine, with a Google Docs-style editor."
+  description="Octavo is a desktop office suite for macOS, Windows and Linux. Edit Word, Excel, PowerPoint, PDF, Markdown and HTML files on your own machine, with a Google Docs-style editor."
 >
-  <header class="site-header">
-    <div class="wrap bar">
-      <a class="brand" href="#top" aria-label="Octavo home">
-        <svg viewBox="0 0 64 64" aria-hidden="true"
-          ><rect width="64" height="64" rx="14" fill="currentColor"></rect><circle
-            cx="32"
-            cy="32"
-            r="15.6"
-            fill="none"
-            stroke="var(--bg)"
-            stroke-width="7.8"></circle></svg
-        >
-        <span>Octavo</span>
-      </a>
-      <nav aria-label="Main">
-        <a href="#editors" class="hide-sm">Editors</a>
-        <a href="#privacy" class="hide-sm">Privacy</a>
-        <a href="#download" class="btn primary small">Download</a>
-      </nav>
-    </div>
-  </header>
+  <Header />
 
   <main id="top">
     <section class="hero">
       <div class="wrap">
-        <p class="eyebrow">Free and open source · macOS · Windows · Linux</p>
+        <p class="eyebrow">Desktop office suite · macOS · Windows · Linux</p>
         <h1>Real office documents, <em>on your own machine.</em></h1>
         <p class="lede">
           Octavo opens and saves Word, Excel and PowerPoint files locally, with an editor that works
@@ -214,6 +197,7 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
             ))
           }
         </ol>
+        <p class="more"><a href={`${home}privacy/`}>Read the privacy policy</a></p>
       </div>
     </section>
 
@@ -238,11 +222,7 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     <Download />
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap foot">
-      <p class="quiet">This site sets no cookies and runs no analytics.</p>
-    </div>
-  </footer>
+  <Footer />
 </Base>
 
 <script define:vars={{ base: DOWNLOAD_URL, files: FILES }}>
@@ -276,64 +256,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
 </script>
 
 <style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    height: 64px;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text);
-    text-decoration: none;
-    font: 600 22px/1 var(--serif);
-    letter-spacing: -0.01em;
-  }
-
-  .brand:hover {
-    color: var(--text);
-  }
-
-  .brand svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  nav {
-    display: flex;
-    align-items: center;
-    gap: clamp(14px, 3vw, 28px);
-    font-size: 15px;
-  }
-
-  nav a:not(.btn) {
-    color: var(--muted);
-    text-decoration: none;
-  }
-
-  nav a:not(.btn):hover {
-    color: var(--text);
-  }
-
-  .btn.small {
-    min-height: 38px;
-    padding: 0 18px;
-    font-size: 15px;
-  }
 
   .btn.big {
     min-height: 54px;
@@ -540,6 +462,9 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     color: var(--muted);
   }
 
+  .more {
+    margin-top: 40px;
+  }
 
   .section-head code {
     font-size: 0.9em;
@@ -562,23 +487,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     user-select: none;
   }
 
-  .site-footer {
-    border-top: 1px solid var(--line);
-    padding: 40px 0 56px;
-    font-size: 15px;
-    color: var(--muted);
-  }
-
-  .foot {
-    display: grid;
-    gap: 10px;
-  }
-
-
-  .quiet {
-    color: var(--faint);
-  }
-
   @media (max-width: 900px) {
     .editors,
     .principles {
@@ -595,10 +503,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
   }
 
   @media (max-width: 620px) {
-    .hide-sm {
-      display: none;
-    }
-
     .editors,
     .principles {
       grid-template-columns: minmax(0, 1fr);

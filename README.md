@@ -32,3 +32,10 @@ bucket's CORS rule. GitHub Pages redirects the old github.io URL.
 
 The hero shows a drawn mock of Octavo Docs (`src/components/AppMock.astro`).
 Swap in a real screenshot once the UI settles.
+
+## Release notes and privacy
+
+Each release gets a Markdown file in `src/content/releases/<version>.md`
+(frontmatter: `version`, `date`, `platforms`), shown at `/releases/`.
+`src/pages/privacy.astro` mirrors `PRIVACY.md` in the app repo; update both
+together.
