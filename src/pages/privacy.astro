@@ -36,27 +36,9 @@ import Page from '../layouts/Page.astro'
   <h2>What does not</h2>
   <ul>
     <li>
-      <strong>No usage analytics.</strong> Octavo builds include no analytics credentials, so the analytics
-      code described below stays inactive.
+      <strong>No usage analytics.</strong> Octavo sends no usage statistics.
     </li>
     <li><strong>No account.</strong> Octavo has no sign-in and no cloud document store.</li>
-  </ul>
-
-  <h2>Inactive analytics code</h2>
-  <p>
-    The analytics module inherited from GenOffice is still in the source. It sends nothing unless a
-    build injects Google Analytics 4 credentials, which Octavo builds do not. If that ever changes,
-    this list is what it would send (no document content, file names, paths or email addresses),
-    and <b>Settings → General → Send anonymous usage statistics</b> would turn it off:
-  </p>
-  <ul>
-    <li><code>install_first_launch</code>: first launch of a new anonymous install ID</li>
-    <li><code>app_launch</code>: no event-specific parameter</li>
-    <li><code>file_open</code>: <code>ext</code>, the file extension such as <code>docx</code></li>
-    <li>
-      <code>file_new</code>: <code>kind</code>, one of <code>docx</code>, <code>xlsx</code>,{' '}
-      <code>pptx</code>, <code>md</code> or <code>pdf</code>
-    </li>
   </ul>
 
   <h2>This website</h2>
