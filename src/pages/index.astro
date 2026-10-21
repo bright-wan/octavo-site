@@ -2,12 +2,7 @@
 import Base from '../layouts/Base.astro'
 import AppMock from '../components/AppMock.astro'
 import Download from '../components/Download.astro'
-import {
-  DOWNLOAD_URL,
-  FILES,
-  PRIVACY_URL,
-  REPO_URL,
-} from '../config'
+import { DOWNLOAD_URL, FILES } from '../config'
 
 const editors = [
   {
@@ -106,7 +101,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
       <nav aria-label="Main">
         <a href="#editors" class="hide-sm">Editors</a>
         <a href="#privacy" class="hide-sm">Privacy</a>
-        <a href={REPO_URL}>GitHub</a>
         <a href="#download" class="btn primary small">Download</a>
       </nav>
     </div>
@@ -220,7 +214,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
             ))
           }
         </ol>
-        <p class="more"><a href={PRIVACY_URL}>Read the privacy policy</a></p>
       </div>
     </section>
 
@@ -247,11 +240,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
 
   <footer class="site-footer">
     <div class="wrap foot">
-      <p class="links">
-        <a href={REPO_URL}>GitHub</a>
-        <a href={`${REPO_URL}/issues`}>Report an issue</a>
-        <a href={PRIVACY_URL}>Privacy</a>
-      </p>
       <p class="quiet">This site sets no cookies and runs no analytics.</p>
     </div>
   </footer>
@@ -552,9 +540,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     color: var(--muted);
   }
 
-  .more {
-    margin-top: 40px;
-  }
 
   .section-head code {
     font-size: 0.9em;
@@ -589,11 +574,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     gap: 10px;
   }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 20px;
-  }
 
   .quiet {
     color: var(--faint);

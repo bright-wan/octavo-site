@@ -3,10 +3,6 @@
 // it is empty the download buttons say the first release is on its way.
 export const DOWNLOAD_URL = (import.meta.env.PUBLIC_DOWNLOAD_URL ?? '').replace(/\/+$/, '')
 
-export const REPO_URL = 'https://github.com/bright-wan/octavo'
-export const RELEASES_URL = `${REPO_URL}/releases`
-export const PRIVACY_URL = `${REPO_URL}/blob/main/PRIVACY.md`
-export const BUILD_URL = `${REPO_URL}#building-from-source`
 
 // Stable alias names scripts/r2-release-upload.cjs re-points every release.
 // Keys match the "files" ids in latest.json.

@@ -1,5 +1,5 @@
 ---
-import { BUILD_URL, DOWNLOAD_URL, RELEASES_URL, downloadHref, type FileId } from '../config'
+import { DOWNLOAD_URL, downloadHref, type FileId } from '../config'
 
 const ready = Boolean(DOWNLOAD_URL)
 
@@ -38,7 +38,7 @@ const downloadIcon =
           Open the disk image and drag Octavo into Applications. Builds are signed and notarized
           by Apple, and Octavo updates itself.
         </p>
-        <p class="aside">Intel Mac? <a href={BUILD_URL}>Build from source</a> for now.</p>
+        <p class="aside">Intel Macs are not supported yet.</p>
       </article>
 
       <article class="platform" data-os="windows">
@@ -81,10 +81,6 @@ chmod +x Octavo-linux-x86_64.AppImage</code></pre>
         <summary>SHA-256 checksums</summary>
         <ul></ul>
       </details>
-      <p class="links">
-        <a href={RELEASES_URL}>Release notes</a>
-        <a href={BUILD_URL}>Build from source</a>
-      </p>
     </div>
   </div>
 </section>
@@ -243,10 +239,6 @@ chmod +x Octavo-linux-x86_64.AppImage</code></pre>
     color: var(--muted);
   }
 
-  .links {
-    display: flex;
-    gap: 20px;
-  }
 
   .extras details {
     flex: 1 1 520px;
