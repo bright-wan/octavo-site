@@ -12,6 +12,10 @@
   --accent-hover: #96450a;
   --accent-ink: #ffffff;
   --accent-soft: #fcebd5;
+  /* primary buttons: filled with the logo color, dark label */
+  --btn: var(--logo);
+  --btn-hover: #e58b12;
+  --btn-ink: #1a0e07;
   --shadow: 0 1px 2px rgb(30 25 15 / 6%), 0 12px 40px -12px rgb(30 25 15 / 22%);
   --code-bg: #1d1c19;
   --code-text: #ecebe6;
@@ -47,6 +51,7 @@
     --accent-hover: #f6ae4d;
     --accent-ink: #1a0e07;
     --accent-soft: #3a2a14;
+    --btn-hover: #f6ae4d;
     --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 18px 50px -16px rgb(0 0 0 / 70%);
     --code-bg: #0b0b0a;
 
@@ -186,15 +191,15 @@ pre {
 }
 
 .btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+  background: var(--btn);
+  border-color: var(--btn);
+  color: var(--btn-ink);
 }
 
 .btn.primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-  color: var(--accent-ink);
+  background: var(--btn-hover);
+  border-color: var(--btn-hover);
+  color: var(--btn-ink);
 }
 
 .btn[aria-disabled='true'] {
