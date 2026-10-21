@@ -98,38 +98,51 @@ chmod +x Octavo-linux-x86_64.AppImage</code></pre>
 
   const mb = (bytes) => `${Math.round(bytes / 1048576)} MB`
 
-  if (base) {
-    fetch(`${base}/latest.json`, { cache: 'no-cache' })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-      .then((m) => {
-        if (typeof m.version !== 'string') return
-        document.querySelectorAll('[data-version]').forEach((el) => {
-          el.textContent = `: version ${m.version}`
-        })
-        document.querySelectorAll('[data-version-short]').forEach((el) => {
-          el.textContent = `Version ${m.version}`
-        })
-        for (const [id, f] of Object.entries(m.files ?? {})) {
-          const meta = document.querySelector(`[data-meta="${id}"]`)
-          if (meta && f.size) meta.textContent = `${f.file} · ${mb(f.size)}`
-          const size = document.querySelector(`[data-size="${id}"]`)
-          if (size && f.size) size.textContent = mb(f.size)
-        }
-        const box = document.querySelector('[data-checksums]')
-        const list = box?.querySelector('ul')
-        if (box && list) {
-          for (const f of Object.values(m.files ?? {})) {
-            const li = document.createElement('li')
-            const code = document.createElement('code')
-            code.textContent = f.sha256
-            li.append(code, ` ${f.file}`)
-            list.append(li)
-          }
-          box.hidden = false
-        }
+  // Resolves to the manifest, { files: {} } before the first release (404),
+  // or null when the bucket can't be reached (links are then left alone).
+  // The hero script waits on the same promise.
+  window.octavoRelease = base
+    ? fetch(`${base}/latest.json`, { cache: 'no-cache' })
+        .then((res) =>
+          res.ok ? res.json() : res.status === 404 ? { files: {} } : Promise.reject(res.status),
+        )
+        .catch(() => null)
+    : Promise.resolve(null)
+
+  window.octavoRelease.then((m) => {
+    if (!m) return
+    const files = m.files ?? {}
+    if (typeof m.version === 'string') {
+      document.querySelectorAll('[data-version]').forEach((el) => {
+        el.textContent = `: version ${m.version}`
       })
-      .catch(() => {})
-  }
+      document.querySelectorAll('[data-version-short]').forEach((el) => {
+        el.textContent = `Version ${m.version}`
+      })
+    }
+    // a platform not released yet: no dead link, say so instead
+    document.querySelectorAll('[data-file]').forEach((a) => {
+      if (files[a.dataset.file]) return
+      a.removeAttribute('href')
+      a.setAttribute('aria-disabled', 'true')
+    })
+    document.querySelectorAll('[data-meta]').forEach((meta) => {
+      const f = files[meta.dataset.meta]
+      meta.textContent = f ? `${f.file} · ${mb(f.size)}` : 'Coming soon'
+    })
+    const box = document.querySelector('[data-checksums]')
+    const list = box?.querySelector('ul')
+    if (box && list && Object.keys(files).length) {
+      for (const f of Object.values(files)) {
+        const li = document.createElement('li')
+        const code = document.createElement('code')
+        code.textContent = f.sha256
+        li.append(code, ` ${f.file}`)
+        list.append(li)
+      }
+      box.hidden = false
+    }
+  })
 </script>
 
 <style>

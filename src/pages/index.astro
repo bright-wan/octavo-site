@@ -271,14 +271,21 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
   const label = document.querySelector('[data-hero-label]')
   const platform = document.querySelector('[data-hero-platform]')
   const choice = {
-    mac: ['Download for macOS', 'mac-arm64', 'Apple silicon'],
-    windows: ['Download for Windows', 'win-x64', 'Windows 10 and 11'],
+    mac: ['Download for macOS', 'mac-arm64', 'Apple silicon', 'macOS'],
+    windows: ['Download for Windows', 'win-x64', 'Windows 10 and 11', 'Windows'],
   }[os]
   if (button && label) {
     if (choice && base) {
       label.textContent = choice[0]
       button.href = `${base}/${files[choice[1]]}`
       if (platform) platform.textContent = choice[2]
+      // not released for this platform yet: send the visitor to the list
+      window.octavoRelease?.then((m) => {
+        if (!m || m.files?.[choice[1]]) return
+        label.textContent = 'Download Octavo'
+        button.href = '#download'
+        if (platform) platform.textContent = `${choice[3]} version coming soon`
+      })
     } else {
       button.href = '#download'
       if (os === 'linux') label.textContent = 'Download for Linux'
