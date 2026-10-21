@@ -5,10 +5,8 @@ import Download from '../components/Download.astro'
 import {
   DOWNLOAD_URL,
   FILES,
-  LICENSE_URL,
   PRIVACY_URL,
   REPO_URL,
-  UPSTREAM_URL,
 } from '../config'
 
 const editors = [
@@ -249,10 +247,6 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
 
   <footer class="site-footer">
     <div class="wrap foot">
-      <p>
-        Octavo is free software under the <a href={LICENSE_URL}>Apache License 2.0</a>. It is a
-        modified version of <a href={UPSTREAM_URL}>GenOffice</a>.
-      </p>
       <p class="links">
         <a href={REPO_URL}>GitHub</a>
         <a href={`${REPO_URL}/issues`}>Report an issue</a>
