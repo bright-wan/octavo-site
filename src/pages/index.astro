@@ -70,10 +70,6 @@ const principles = [
     'Files open, edit, save and convert on your computer. There is no account and no cloud document store.',
   ],
   [
-    'Nothing leaves unless you ask',
-    'AI is off until you add a provider in Settings, and then requests go only to that provider, or to a model you run yourself. No analytics.',
-  ],
-  [
     'Real formats',
     'Octavo rewrites only the parts you edit, so files keep opening correctly in Word, Excel and PowerPoint.',
   ],
@@ -438,7 +434,7 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(24px, 4vw, 48px);
   }
 
@@ -488,8 +484,7 @@ const heroHref = DOWNLOAD_URL ? `${DOWNLOAD_URL}/${FILES['mac-arm64']}` : '#down
   }
 
   @media (max-width: 900px) {
-    .editors,
-    .principles {
+    .editors {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
